@@ -26,11 +26,6 @@ rows = st.slider("Select number of rows to display", 1, 20, 5)
 st.dataframe(df.head(rows))
 
 
-st.subheader("Dataset info")
-st.write("Here are some info about the dataset:")
-st.dataframe(df.info()) 
-
-
 
 # Display dataset info
 st.subheader("Dataset Info")
@@ -41,3 +36,19 @@ df.info(buf=buffer)  # Write df.info() output to buffer
 info_str = buffer.getvalue()  # Get the string output
 
 st.text(info_str)  # Display the info as plain text
+
+
+
+# Streamlit app
+st.title("Histogram Plots 📊")
+
+st.subheader("Select a column to visualize its distribution")
+column = st.selectbox("Choose a numerical column:", df.select_dtypes(include=["int", "float"]).columns)
+
+# Plot histogram
+fig, ax = plt.subplots()
+sns.histplot(df[column], kde=True, bins=30, ax=ax)
+ax.set_title(f"Histogram of {column}")
+
+# Display plot in Streamlit
+st.pyplot(fig)
