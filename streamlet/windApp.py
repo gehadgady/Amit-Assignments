@@ -11,7 +11,7 @@ st.write('This is a simple example of a Streamlit app that shows some data analy
 # Load dataset
 @st.cache_data
 def load_data():
-    return pd.read_csv("../wind_turbine_maintenance_data.csv")  # Change filename if needed
+    return pd.read_csv("streamlet/data/wind_turbine_maintenance_data.csv")  # Change filename if needed
 
 df = load_data()
 
