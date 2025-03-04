@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
+import io
 
 
 st.title('Wind Turbine Power Prediction App')
@@ -28,3 +29,15 @@ st.dataframe(df.head(rows))
 st.subheader("Dataset info")
 st.write("Here are some info about the dataset:")
 st.dataframe(df.info()) 
+
+
+
+# Display dataset info
+st.subheader("Dataset Info")
+st.write("Here are some details about the dataset:")
+
+buffer = io.StringIO()  # Create an in-memory buffer
+df.info(buf=buffer)  # Write df.info() output to buffer
+info_str = buffer.getvalue()  # Get the string output
+
+st.text(info_str)  # Display the info as plain text
