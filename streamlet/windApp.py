@@ -23,3 +23,8 @@ st.dataframe(df.head())
 # let user decide what number of rows to show
 rows = st.slider("Select number of rows to display", 1, 20, 5)
 st.dataframe(df.head(rows))
+
+
+st.subheader("Dataset info")
+st.write("Here are some info about the dataset:")
+st.dataframe(df.info()) 
