@@ -4,4 +4,4 @@ matplotlib
 seaborn
 streamlit
 joblib
-hf_hub_download
+huggingface_hub
