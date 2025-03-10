@@ -5,6 +5,9 @@ import seaborn as sns
 import streamlit as st
 import io
 
+import joblib
+from huggingface_hub import hf_hub_download
+
 
 st.title('Wind Turbine Power Prediction App')
 st.write('This is a simple example of a Streamlit app that shows some data analysis on the Wind Turbine dataset.')
@@ -52,3 +55,39 @@ ax.set_title(f"Histogram of {column}")
 
 # Display plot in Streamlit
 st.pyplot(fig)
+
+
+# getting data from the user to use the model to predict
+
+# Download the model from Hugging Face
+model_path = hf_hub_download(repo_id="gehadgady/wind_turbine_model", filename="wind_turbine_model.pkl")
+
+# Load the model
+model = joblib.load(model_path)
+
+
+st.title("Wind Turbine Maintenance Prediction ⚙️💨")
+
+st.subheader("Enter Sensor Data:")
+rotor_speed = st.number_input("Rotor Speed (RPM)", min_value=0.0, step=0.1)
+wind_speed = st.number_input("Wind Speed (mps)", min_value=0.0, step=0.1)
+power_output = st.number_input("Power Output (kW)", min_value=0.0, step=0.1)
+gearbox_temp = st.number_input("Gearbox Oil Temp (°C)", min_value=-50.0, step=0.1)
+generator_temp = st.number_input("Generator Bearing Temp (°C)", min_value=-50.0, step=0.1)
+vibration = st.number_input("Vibration Level (mm/s)", min_value=0.0, step=0.1)
+ambient_temp = st.number_input("Ambient Temp (°C)", min_value=-50.0, step=0.1)
+humidity = st.number_input("Humidity (%)", min_value=0.0, max_value=100.0, step=1.0)
+
+
+if st.button("Predict Maintenance Status"):
+    input_data = np.array([[rotor_speed, wind_speed, power_output, gearbox_temp, 
+                            generator_temp, vibration, ambient_temp, humidity]])
+
+    prediction = model.predict(input_data)[0]  # Get the predicted class
+
+    if prediction == 0:
+        st.success("✅ No Fix Needed")
+    elif prediction == 1:
+        st.warning("⚠️ Check-up Required")
+    else:
+        st.error("🚨 Immediate Fix Needed!")
